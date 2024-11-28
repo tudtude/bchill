@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "types": ["bun-types"],
+        "module": "CommonJS",
+        "target": "es2020",
+        "lib": ["ESNext"],
+        "declaration": false,
+        "strict": true,
+        "moduleResolution": "Node",
+        "skipLibCheck": true,
+        "outDir": "dist"
+    },
+    "include": ["src"],
+    "exclude": ["node_modules/*", "reminder"]
+}
