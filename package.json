@@ -1,9 +1,19 @@
 {
-    "name": "bchilla",
+    "name": "bchill",
+    "description": "Under testing package",
     "version": "0.0.1",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
+    "homepage": "https://github.com/tudtude/bchill",
+    "repository": {
+        "url": "https://github.com/tudtude/bchill"
+    },
+    "author": {
+        "name": "tudtude",
+        "email": "tudtude@gmail.com",
+        "url": "https://github.com/tudtude"
+    },
     "scripts": {
         "make": "tsup"
     },
@@ -20,5 +30,12 @@
         "redis": "^4.7.0",
         "winston": "^3.8.0",
         "winston-syslog": "^2.7.1"
-    }
+    },
+    "license": "MIT",
+    "keywords": [
+        "bun",
+        "mongoose",
+        "redis",
+        "winston"
+    ]
 }

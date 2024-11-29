@@ -1,9 +1,9 @@
-# bchilla
+# bchill
 
 To install dependencies:
 
 ```bash
-bun install
+bun add bchill
 ```
 
 To run:
