@@ -12,16 +12,17 @@ module.exports = function ({
 }) {
     const dirTarget = path.join(process.cwd(), "/modules");
     const dirs = fs.readdirSync(dirTarget);
-    // const log = service.log;
 
     if (type === "routes") {
         for (let dir of dirs) {
+            if (!fs.existsSync(dirTarget + "/" + dir + "/routes")) return;
             processDir({ dirTarget, dir });
         }
     }
 
     if (type == "methods") {
         for (let dir of dirs) {
+            if (!fs.existsSync(dirTarget + "/" + dir + "/methods")) return;
             let files = fs.readdirSync(dirTarget + "/" + dir + "/methods", {
                 withFileTypes: true,
             });
