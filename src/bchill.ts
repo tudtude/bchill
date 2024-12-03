@@ -1,6 +1,6 @@
-// const { Elysia } = require("elysia");
 import { Elysia } from "elysia";
-import type { ConfigProps } from "./types";
+const fs = require("fs");
+const path = require("path");
 
 export async function bchill({
     apiPort,
@@ -56,40 +56,51 @@ export async function bchill({
             : console.log("Redis was set");
     }
 
-    if (mongoose) {
-        const models = await require("./lib/getModels")(service);
-        service.models = models;
+    if (fs.readdirSync(process.cwd()).includes("modules")) {
+        if (mongoose) {
+            const models = await require("./lib/getModels")(service);
+            service.models = models;
+            service.logger
+                ? service.logger.info("Mongoose models were set")
+                : console.log("Mongoose models were set");
+        }
+
+        const methods = require("./lib/getMethods")(service);
+        service.methods = methods;
         service.logger
-            ? service.logger.info("Mongoose models were set")
-            : console.log("Mongoose models were set");
+            ? service.logger.info(
+                  "Methods were set, There are " +
+                      Object.keys(methods).length +
+                      " methods"
+              )
+            : console.log(
+                  "Methods were set" + Object.keys(methods).length + " methods"
+              );
+
+        const routes = require("./lib/getRoutes")(service);
+        let routesCout: number = 0;
+        routes.map((i: any) => {
+            routesCout += Number(i.routeTree.size);
+        });
+        elysia.use(routes);
+        service.logger
+            ? service.logger.info(
+                  "Routes were set, There are " + routesCout + " routes"
+              )
+            : console.log(
+                  "Routes were set, There are " + routesCout + " routes"
+              );
+    } else {
+        service.logger
+            ? service.logger.warn(
+                  "There is no modules folder, so no models & methods & routes were set"
+              )
+            : console.log(
+                  "There is no modules folder, so no models & methods & routes were set"
+              );
     }
 
-    const methods = require("./lib/getMethods")(service);
-    service.methods = methods;
-    service.logger
-        ? service.logger.info(
-              "Methods were set, There are " +
-                  Object.keys(methods).length +
-                  " methods"
-          )
-        : console.log(
-              "Methods were set" + Object.keys(methods).length + " methods"
-          );
-
-    const routes = require("./lib/getRoutes")(service);
-    let routesCout: number = 0;
-    routes.map((i: any) => {
-        routesCout += Number(i.routeTree.size);
-    });
-
-    elysia.use(routes);
-
-    service.logger
-        ? service.logger.info(
-              "Routes were set, There are " + routesCout + " routes"
-          )
-        : console.log("Routes were set, There are " + routesCout + " routes");
-
+    elysia.get("/check", "ok");
     elysia.listen(apiPort, () => {
         service.logger
             ? service.logger.info(`Server running on port ${apiPort}`)
