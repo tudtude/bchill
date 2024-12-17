@@ -1,16 +1,20 @@
 import { Elysia } from "elysia";
+import { default as corsjs } from "@elysiajs/cors";
+
 const fs = require("fs");
 const path = require("path");
 
 export async function bchill({
     apiPort,
     appName,
+    cors,
     winstonLog,
     redis,
     mongoose,
 }: {
     apiPort: number;
     appName: string;
+    cors?: [string];
     winstonLog?: {
         console?: boolean;
         file?: string;
@@ -101,6 +105,9 @@ export async function bchill({
     }
 
     elysia.get("/check", "ok");
+
+    elysia.use(corsjs({ origin: cors ? cors : [] }));
+
     elysia.listen(apiPort, () => {
         service.logger
             ? service.logger.info(`Server running on port ${apiPort}`)
