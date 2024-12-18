@@ -23,14 +23,15 @@ module.exports = function ({
 
     if (type == "methods") {
         for (let dir of dirs) {
-            if (!fs.existsSync(dirTarget + "/" + dir + "/methods")) return;
-            let files = fs.readdirSync(dirTarget + "/" + dir + "/methods", {
-                withFileTypes: true,
-            });
-            files = files.filter((file: any) => !file.isDirectory());
-            for (let file of files) {
-                const name = path.parse(file.name).name;
-                processDir({ dirTarget, dir, name });
+            if (fs.existsSync(dirTarget + "/" + dir + "/methods")) {
+                let files = fs.readdirSync(dirTarget + "/" + dir + "/methods", {
+                    withFileTypes: true,
+                });
+                files = files.filter((file: any) => !file.isDirectory());
+                for (let file of files) {
+                    const name = path.parse(file.name).name;
+                    processDir({ dirTarget, dir, name });
+                }
             }
         }
     }
