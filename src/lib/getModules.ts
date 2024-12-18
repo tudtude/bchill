@@ -15,8 +15,9 @@ module.exports = function ({
 
     if (type === "routes") {
         for (let dir of dirs) {
-            if (!fs.existsSync(dirTarget + "/" + dir + "/routes")) return;
-            processDir({ dirTarget, dir });
+            if (fs.existsSync(dirTarget + "/" + dir + "/routes")) {
+                processDir({ dirTarget, dir });
+            }
         }
     }
 
